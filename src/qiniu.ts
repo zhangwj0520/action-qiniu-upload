@@ -42,6 +42,7 @@ export default class QiniuUpload {
     this.bucketManager = new qiniu.rs.BucketManager(this.mac, this.config)
 
     this.uploader = new qiniu.form_up.FormUploader(this.config)
+    core.info('uploader init')
   }
 
   /**

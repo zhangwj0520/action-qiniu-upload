@@ -31,6 +31,6 @@ export async function run(): Promise<void> {
   } catch (error) {
     console.log('error', error)
     // 如果发生错误，则工作流运行失败, 退出并提供错误消息
-    if (error instanceof Error) core?.setFailed(error.message)
+    if (error instanceof Error) core.setFailed(error.message)
   }
 }
