@@ -7,8 +7,6 @@ import * as glob from 'glob'
 import pAll from 'p-all'
 import pRetry from 'p-retry'
 
-import * as core from '@actions/core'
-
 export default class QiniuUpload {
   private mac: auth.digest.Mac
   private config: conf.ConfigOptions
@@ -18,6 +16,8 @@ export default class QiniuUpload {
   private destDir: string
   private ignoreSourceMap: boolean
   private uploader: qiniu.form_up.FormUploader
+  private info: (msg: string) => void
+  private error: (msg: string) => void
 
   constructor({
     accessKey,
@@ -26,12 +26,18 @@ export default class QiniuUpload {
     zone,
     sourceDir,
     destDir,
-    ignoreSourceMap
+    ignoreSourceMap,
+    info,
+    error
   }: QiniuConfig) {
     this.bucket = bucket
     this.sourceDir = sourceDir
     this.destDir = destDir
     this.ignoreSourceMap = ignoreSourceMap
+    this.info = info
+    this.error = error
+
+    this.info('uploader init start')
 
     this.mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
     // 获取七牛配置
@@ -42,7 +48,7 @@ export default class QiniuUpload {
     this.bucketManager = new qiniu.rs.BucketManager(this.mac, this.config)
 
     this.uploader = new qiniu.form_up.FormUploader(this.config)
-    core.info('uploader init')
+    this.info('uploader init done')
   }
 
   /**
@@ -133,7 +139,7 @@ export default class QiniuUpload {
         if (err) return reject(new Error(`Upload failed: ${file}`))
 
         if (info.statusCode === 200) {
-          core.info(`Success: ${file} => [${this.bucket}]: ${key}`)
+          this.info(`Success: ${file} => [${this.bucket}]: ${key}`)
           return resolve({ file, to: key })
         }
         reject(new Error(`Upload failed: ${file}`))
@@ -165,9 +171,9 @@ export default class QiniuUpload {
 
     try {
       await pAll(tasks, { concurrency: 5 })
-      core.info('所有文件上次完毕!')
+      this.info('所有文件上次完毕!')
     } catch (error) {
-      core.setFailed((error as Error).message)
+      this.error((error as Error).message || 'Error')
     }
   }
 }

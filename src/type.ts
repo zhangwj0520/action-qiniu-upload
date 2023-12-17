@@ -6,6 +6,8 @@ export type QiniuConfig = {
   sourceDir: string
   destDir: string
   ignoreSourceMap: boolean
+  info: (msg: string) => void
+  error: (msg: string) => void
   // zone: conf.Zone
 }
 

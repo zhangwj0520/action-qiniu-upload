@@ -17,7 +17,6 @@ export async function run(): Promise<void> {
     const destDir = core.getInput('dest_dir')
     const ignoreSourceMap = core.getInput('ignore_source_map') === 'true'
 
-    console.log('start')
     const manager = new QiniuUpload({
       accessKey,
       secretKey,
@@ -25,7 +24,9 @@ export async function run(): Promise<void> {
       zone,
       sourceDir,
       destDir,
-      ignoreSourceMap
+      ignoreSourceMap,
+      info: msg => core.info(msg),
+      error: msg => core.setFailed(msg)
     })
     await manager.upload()
   } catch (error) {
