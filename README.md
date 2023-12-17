@@ -41,9 +41,8 @@ jobs:
         # Bucket name, required.
         bucket: ${{ secrets.QINIU_BUCKET }}
 
-        # Your qiniu zone.
-        # Default: 'Zone_z1'
-        zone: ${{ secrets.QINIU_ZONE}}
+         # 是否覆盖已有文件
+        is_cover : true
 
         # The local directory (or file) you want to upload to bucket.
         # Default: './dist'

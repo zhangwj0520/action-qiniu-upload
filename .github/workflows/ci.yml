@@ -10,8 +10,8 @@ permissions:
   contents: read
 
 jobs:
-  test-typescript:
-    name: TypeScript Tests
+  build-and-upload:
+    name: Build and Upload
     runs-on: ubuntu-latest
 
     steps:
@@ -34,45 +34,10 @@ jobs:
       - name: Install Dependencies
         id: pnpm-install
         run: pnpm install
-      
-      # - name: Install pnpm
-      #   uses: pnpm/action-setup@v2
-      #   with:
-      #       version: 8
-      #       run_install: false
 
-      # - name: Get pnpm store directory
-      #   shell: bash
-      #   run: |
-      #     echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      # - uses: actions/cache@v3
-      #   name: Setup pnpm cache
-      #   with:
-      #     path: ${{ env.STORE_PATH }}
-      #     key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-pnpm-store-
-
-      # - name: Install dependencies
-      #   run: pnpm install
-
-      - name: Check Format
-        id: npm-format-check
-        run: pnpm run format:check
-
-      - name: Lint
-        id: npm-lint
-        run: pnpm run lint
-
-  test-action:
-    name: GitHub Actions Test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        id: checkout
-        uses: actions/checkout@v4
+      - name: 构建
+        id: pnpm-build
+        run: pnpm run all
 
       - name: 本地测试Action文件上传
         id: test-action
@@ -87,9 +52,11 @@ jobs:
           # Bucket name, required.
           bucket: ${{ secrets.QINIU_BUCKET }}
 
-          # is_cover : true
+          is_cover : true
 
           source_dir: './dist'
 
           dest_dir: ''
+
+
 
