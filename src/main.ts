@@ -8,7 +8,7 @@ import upload from './upload'
  */
 export async function run(): Promise<void> {
   try {
-    console.log(111111111)
+    console.log('kaishi')
 
     const ms: string = core.getInput('milliseconds')
 

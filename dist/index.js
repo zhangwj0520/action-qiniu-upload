@@ -58889,15 +58889,26 @@ const upload = async ({ accessKey, secretKey, bucket, zone, sourceDir, destDir, 
  */
 async function run() {
     try {
-        console.log(111111111);
+        console.log('kaishi');
+        const ms = core_default().getInput('milliseconds');
+        // Debug logs are only output if the `ACTIONS_STEP_DEBUG` secret is true
+        core_default().debug(`Waiting ${ms} milliseconds ...`);
         const accessKey = core_default().getInput('access_key');
+        console.log('accessKey: ', accessKey);
         const secretKey = core_default().getInput('secret_key');
+        console.log('secretKey: ', secretKey);
         const bucket = core_default().getInput('bucket');
+        console.log('bucket: ', bucket);
         const zone = core_default().getInput('zone');
+        console.log('zone: ', zone);
         const sourceDir = core_default().getInput('source_dir');
+        console.log('sourceDir: ', sourceDir);
         const destDir = core_default().getInput('dest_dir');
+        console.log('destDir: ', destDir);
         const ignoreSourceMap = core_default().getInput('ignore_source_map') === 'true';
-        src_upload({
+        console.log('ignoreSourceMap: ', ignoreSourceMap);
+        console.log(111);
+        await src_upload({
             accessKey,
             secretKey,
             bucket,
