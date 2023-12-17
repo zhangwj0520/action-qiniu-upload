@@ -1,21 +1,23 @@
 {
-  "name": "typescript-action",
-  "description": "GitHub Actions TypeScript template",
+  "name": "qiniu-kodo-upload",
+  "description": "七牛云Kodo上传",
   "version": "0.0.1",
   "author": "zhangweijie",
   "private": true,
-  "homepage": "https://github.com/actions/typescript-action",
+  "homepage": "https://github.com/zhangwj0520/action-qiniu-upload",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/zhangwj0520/action-qiniu-upload.git"
   },
   "bugs": {
-    "url": "https://github.com/actions/typescript-action/issues"
+    "url": "https://github.com/zhangwj0520/action-qiniu-upload/issues"
   },
   "keywords": [
     "actions",
     "node",
-    "setup"
+    "qiniu",
+    "upload",
+    "kodo"
   ],
   "exports": {
     ".": "./dist/index.js"
