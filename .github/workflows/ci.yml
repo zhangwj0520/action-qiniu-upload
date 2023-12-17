@@ -73,6 +73,12 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
 
       - name: 本地测试Action文件上传
         id: test-action
