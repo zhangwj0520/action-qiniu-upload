@@ -5,8 +5,8 @@ author: 'zhangwweijie'
 # 在此添加您的操作品牌。这将出现在 GitHub Marketplace 上。
 # https://docs.github.com/zh/actions/creating-actions/metadata-syntax-for-github-actions
 branding:
-  icon: 'play-circle'
-  color: 'green'
+  icon: 'play'
+  color: 'blue'
 # 定义相关变量  
 inputs:
   access_key:
