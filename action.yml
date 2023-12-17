@@ -6,8 +6,13 @@ author: 'zhangwweijie'
 branding:
   icon: 'heart'
   color: 'red'
+
 # 定义相关变量  
 inputs:
+  milliseconds:
+    description: '测试'
+    required: true
+    default: '1000'
   access_key:
     description: 'access key'
     required: true
