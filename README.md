@@ -10,6 +10,9 @@
 
 此操作使用 [qiniu nodejs sdk](https://github.com/qiniu/nodejs-sdk) 将目录（来自您的存储库或在工作流程中生成）上传到云存储桶。
 
+> [!重要]
+> 支持覆盖上传
+
 ## 用法
 
 ```yaml
