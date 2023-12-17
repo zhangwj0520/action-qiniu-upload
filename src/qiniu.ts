@@ -7,7 +7,7 @@ import * as glob from 'glob'
 import pAll from 'p-all'
 import pRetry from 'p-retry'
 
-import core from '@actions/core'
+import * as core from '@actions/core'
 
 export default class QiniuUpload {
   private mac: auth.digest.Mac
