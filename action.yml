@@ -1,24 +1,39 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Qiniu Upload'
+description: 'github action for uploading files to qiniu'
+author: 'zhangwweijie'
 
 # 在此添加您的操作品牌。这将出现在 GitHub Marketplace 上。
 branding:
   icon: 'heart'
   color: 'red'
-
-# Define your inputs here.
+# 定义相关变量  
 inputs:
-  milliseconds:
-    description: '测试'
+  access_key:
+    description: 'access key'
     required: true
-    default: '1000'
-
-# Define your outputs here.
-outputs:
-  time:
-    description: 'Your output description here'
-
+  secret_key:
+    description: 'secret key'
+    required: true
+  bucket:
+    description: 'bucket'
+    required: true
+  zone:
+    description: 'zone'
+    default: 'Zone_z1'
+    required: false
+  source_dir:
+    description: '上传的文件路径'
+    default: './dist'
+    required: false
+  dest_dir:
+    description: 'dest dir, namely key prefix'
+    default: '/'
+    required: false
+  ignore_source_map:
+    description: 'ignore source maps'
+    default: true
+    required: false
+    
 runs:
-  using: node20
-  main: dist/index.js
+  using: 'node20'
+  main: 'dist/index.js'
