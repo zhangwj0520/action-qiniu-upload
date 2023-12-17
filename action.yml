@@ -17,9 +17,9 @@ inputs:
   bucket:
     description: 'bucket'
     required: true
-  zone:
-    description: 'zone'
-    default: 'Zone_z1'
+  is_cover:
+    description: '是否覆盖上传'
+    default:  false
     required: false
   source_dir:
     description: '上传的文件路径'

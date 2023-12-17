@@ -12,17 +12,20 @@ export default class QiniuUpload {
   private config: conf.ConfigOptions
   private bucketManager: rs.BucketManager
   private bucket: string
+  isCover: boolean
   private sourceDir: string
   private destDir: string
   private ignoreSourceMap: boolean
   private uploader: qiniu.form_up.FormUploader
   private info: (msg: string) => void
   private error: (msg: string) => void
+  uploadToken: string
 
   constructor({
     accessKey,
     secretKey,
     bucket,
+    isCover,
     sourceDir = './dist',
     destDir = '',
     ignoreSourceMap,
@@ -36,14 +39,21 @@ export default class QiniuUpload {
     this.info = info
     this.error = error
 
+    this.isCover = isCover
+
     this.mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
     // 获取七牛配置
     this.config = new qiniu.conf.Config()
     this.config.zone = qiniu.zone.Zone_z1
     // 资源管理相关的操作首先要构建BucketManager对象
     this.bucketManager = new qiniu.rs.BucketManager(this.mac, this.config)
-
     this.uploader = new qiniu.form_up.FormUploader(this.config)
+
+    const putPolicy = new qiniu.rs.PutPolicy({
+      scope: `${this.bucket}`
+    })
+    this.uploadToken = putPolicy.uploadToken(this.mac)
+
     this.info('uploader init done')
   }
 
@@ -122,7 +132,7 @@ export default class QiniuUpload {
     }
   }
 
-  async uploadFile(file: string, key: string): Promise<UploadRes> {
+  async uploadFileWithCover(file: string, key: string): Promise<UploadRes> {
     this.info(`Uploading file ${file} to ${key}`)
     return new Promise((resolve, reject) => {
       const options = {
@@ -145,6 +155,30 @@ export default class QiniuUpload {
         reject(new Error(`文件上次失败: ${key}`))
       })
     })
+  }
+  async uploadFileNoCover(file: string, key: string): Promise<UploadRes> {
+    return new Promise((resolve, reject) => {
+      const token = this.uploadToken
+      const putExtra = new qiniu.form_up.PutExtra()
+      this.uploader.putFile(token, key, file, putExtra, (err, body, info) => {
+        if (err) {
+          return reject(new Error(`文件上次失败: ${file}, ${err}`))
+        }
+        if (info.statusCode === 200) {
+          this.info(`文件上次成功: ${file} ========>  ${key}`)
+          return resolve({ file, to: key })
+        }
+        this.error(`Error: ${err}`)
+        reject(new Error(`文件上次失败: ${key}`))
+      })
+    })
+  }
+  async uploadFile(file: string, key: string): Promise<UploadRes> {
+    if (this.isCover) {
+      return this.uploadFileWithCover(file, key)
+    } else {
+      return this.uploadFileNoCover(file, key)
+    }
   }
   private normalizePath(input: string): string {
     return input.replace(/^\//, '')

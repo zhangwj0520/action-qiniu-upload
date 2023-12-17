@@ -2,6 +2,7 @@ export type QiniuConfig = {
   accessKey: string
   secretKey: string
   bucket: string
+  isCover: boolean
   sourceDir: string
   destDir: string
   ignoreSourceMap: boolean
