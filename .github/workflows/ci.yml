@@ -74,11 +74,18 @@ jobs:
         id: checkout
         uses: actions/checkout@v4
 
-      - name: Test Local Action
+      - name: 本地测试Action文件上传
         id: test-action
         uses: ./
         with:
-          milliseconds: 2000
+          # Your qiniu access key, required.
+          access_key: ${{ secrets.QINIU_ACCESS_KEY }}
+
+          # Your qiniu secret key, required.
+          secret_key: ${{ secrets.QINIU_SECRET_KEY }}
+
+          # Bucket name, required.
+          bucket: ${{ secrets.QINIU_BUCKET }}
 
       - name: Print Output
         id: output
