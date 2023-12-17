@@ -93,6 +93,3 @@ jobs:
           # Bucket name, required.
           bucket: ${{ secrets.QINIU_BUCKET }}
 
-      - name: Print Output
-        id: output
-        run: echo "${{ steps.test-action.outputs.time }}"

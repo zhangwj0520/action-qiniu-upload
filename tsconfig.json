@@ -8,9 +8,9 @@
     "rootDir": "./src",
     "baseUrl": "./",
     // "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": "./lib",
     // "noImplicitAny": true,
     "newLine": "lf"
   },
-  "exclude": ["./dist", "./node_modules", "./__tests__", "./coverage"]
+  "exclude": ["./lib", "./node_modules", "./__tests__", "./coverage"]
 }

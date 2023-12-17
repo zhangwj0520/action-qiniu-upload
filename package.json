@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "author": "zhangweijie",
   "private": true,
+  "main": "lib/index.js",
   "homepage": "https://github.com/actions/typescript-action",
   "repository": {
     "type": "git",
@@ -24,11 +25,12 @@
     "node": ">=20"
   },
   "scripts": {
+    "build": "tsc",
     "bundle": "npm run format:write && npm run package",
     "format:write": "prettier --write **/*.ts",
     "format:check": "prettier --check **/*.ts",
     "lint": "npx eslint . -c ./.github/linters/.eslintrc.yml",
-    "package": "ncc build src/index.ts --license licenses.txt",
+    "package": "ncc build lib/index.js --license licenses.txt",
     "package:watch": "npm run package -- --watch",
     "all": "npm run format:write && npm run lint && npm run package"
   },

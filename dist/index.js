@@ -58818,7 +58818,7 @@ async function pRetry(input, options) {
 	});
 }
 
-;// CONCATENATED MODULE: ./src/upload.ts
+;// CONCATENATED MODULE: ./lib/upload.js
 
 
 
@@ -58878,9 +58878,9 @@ const upload = async ({ accessKey, secretKey, bucket, zone, sourceDir, destDir, 
         core_default().setFailed(error.message);
     }
 };
-/* harmony default export */ const src_upload = (upload);
+/* harmony default export */ const lib_upload = (upload);
 
-;// CONCATENATED MODULE: ./src/main.ts
+;// CONCATENATED MODULE: ./lib/main.js
 
 
 /**
@@ -58908,7 +58908,7 @@ async function run() {
         const ignoreSourceMap = core_default().getInput('ignore_source_map') === 'true';
         console.log('ignoreSourceMap: ', ignoreSourceMap);
         console.log(111);
-        await src_upload({
+        await lib_upload({
             accessKey,
             secretKey,
             bucket,
@@ -58937,7 +58937,7 @@ async function run() {
     }
 }
 
-;// CONCATENATED MODULE: ./src/index.ts
+;// CONCATENATED MODULE: ./lib/index.js
 /**
  * The entrypoint for the action.
  */
