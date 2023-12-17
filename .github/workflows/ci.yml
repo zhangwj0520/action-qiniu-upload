@@ -87,7 +87,7 @@ jobs:
           # Bucket name, required.
           bucket: ${{ secrets.QINIU_BUCKET }}
 
-          is_cover : true
+          # is_cover : true
 
           source_dir: './dist'
 
