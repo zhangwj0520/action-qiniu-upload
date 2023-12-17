@@ -10,15 +10,23 @@ export async function run(): Promise<void> {
   try {
     console.log(111111111)
     const accessKey = core.getInput('access_key')
+    console.log('accessKey: ', accessKey)
     const secretKey = core.getInput('secret_key')
+    console.log('secretKey: ', secretKey)
     const bucket = core.getInput('bucket')
+    console.log('bucket: ', bucket)
     const zone = core.getInput('zone')
+    console.log('zone: ', zone)
 
     const sourceDir = core.getInput('source_dir')
+    console.log('sourceDir: ', sourceDir)
     const destDir = core.getInput('dest_dir')
+    console.log('destDir: ', destDir)
     const ignoreSourceMap = core.getInput('ignore_source_map') === 'true'
+    console.log('ignoreSourceMap: ', ignoreSourceMap)
 
-    upload({
+    console.log(111)
+    await upload({
       accessKey,
       secretKey,
       bucket,
