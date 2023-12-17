@@ -10,8 +10,7 @@ export async function run(): Promise<void> {
   try {
     const accessKey = core.getInput('access_key')
     const secretKey = core.getInput('secret_key')
-    const bucket = core.getInput('bucket')
-    const zone = core.getInput('zone')
+    const bucket = core.getInput('bucket') || 'github-action-test'
 
     const sourceDir = core.getInput('source_dir')
     const destDir = core.getInput('dest_dir')
@@ -21,7 +20,6 @@ export async function run(): Promise<void> {
       accessKey,
       secretKey,
       bucket,
-      zone,
       sourceDir,
       destDir,
       ignoreSourceMap,

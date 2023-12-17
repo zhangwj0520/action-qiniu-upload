@@ -23,9 +23,8 @@ export default class QiniuUpload {
     accessKey,
     secretKey,
     bucket,
-    zone,
-    sourceDir,
-    destDir,
+    sourceDir = './dist',
+    destDir = '',
     ignoreSourceMap,
     info,
     error
@@ -37,13 +36,14 @@ export default class QiniuUpload {
     this.info = info
     this.error = error
 
-    this.info('uploader init start')
+    this.info(
+      `'uploader init start,config:',${accessKey}-${secretKey}-${bucket}-${sourceDir}-${destDir}-${ignoreSourceMap}`
+    )
 
     this.mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
     // 获取七牛配置
     this.config = new qiniu.conf.Config()
-    this.config.zone =
-      qiniu.zone[(zone || 'Zone_z1') as keyof typeof qiniu.zone]
+    this.config.zone = qiniu.zone.Zone_z1
     // 资源管理相关的操作首先要构建BucketManager对象
     this.bucketManager = new qiniu.rs.BucketManager(this.mac, this.config)
 
@@ -127,22 +127,26 @@ export default class QiniuUpload {
   }
 
   async uploadFile(file: string, key: string): Promise<UploadRes> {
+    this.info(`Uploading file ${file} to ${key}`)
     return new Promise((resolve, reject) => {
       const options = {
-        scope: `${this.bucket}:${file}`
+        scope: `${this.bucket}:${key}`
       }
       const putPolicy = new qiniu.rs.PutPolicy(options)
       const token = putPolicy.uploadToken(this.mac)
       const putExtra = new qiniu.form_up.PutExtra()
 
       this.uploader.putFile(token, key, file, putExtra, (err, body, info) => {
-        if (err) return reject(new Error(`Upload failed: ${file}`))
+        if (err) {
+          return reject(new Error(`Upload failed: ${file}, ${err}`))
+        }
 
         if (info.statusCode === 200) {
           this.info(`Success: ${file} => [${this.bucket}]: ${key}`)
           return resolve({ file, to: key })
         }
-        reject(new Error(`Upload failed: ${file}`))
+        this.error(`Error: ${err}`)
+        reject(new Error(`111Upload failed: ${file}`))
       })
     })
   }
@@ -152,10 +156,13 @@ export default class QiniuUpload {
 
   async upload(): Promise<void> {
     const baseDir = path.resolve(process.cwd(), this.sourceDir)
+    this.info(`Uploading ${baseDir} to ${this.bucket}`)
+
     const files = glob.sync(`${baseDir}/**/*`, { nodir: true })
 
     const tasks = files
       .map(file => {
+        this.info(`Uploading ${file} files`)
         const relativePath = path.relative(baseDir, path.dirname(file))
         const key = this.normalizePath(
           path.join(this.destDir, relativePath, path.basename(file))
