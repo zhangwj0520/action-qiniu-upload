@@ -1,8 +1,8 @@
 {
   "name": "typescript-action",
   "description": "GitHub Actions TypeScript template",
-  "version": "0.0.0",
-  "author": "",
+  "version": "0.0.1",
+  "author": "zhangweijie",
   "private": true,
   "homepage": "https://github.com/actions/typescript-action",
   "repository": {
@@ -25,13 +25,12 @@
   },
   "scripts": {
     "bundle": "npm run format:write && npm run package",
-    "coverage": "make-coverage-badge --output-path ./badges/coverage.svg",
     "format:write": "prettier --write **/*.ts",
     "format:check": "prettier --check **/*.ts",
     "lint": "npx eslint . -c ./.github/linters/.eslintrc.yml",
-    "package": "ncc build src/index.ts --license licenses.txt",
+    "package": "rm -rf dist/ && ncc build src/index.ts -m --license licenses.txt",
     "package:watch": "npm run package -- --watch",
-    "all": "npm run format:write && npm run lint && npm run coverage && npm run package"
+    "all": "npm run format:write && npm run lint && npm run package"
   },
   "license": "MIT",
   "dependencies": {

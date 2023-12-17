@@ -1,4 +1,4 @@
-import core from '@actions/core'
+import * as core from '@actions/core'
 
 import QiniuUpload from './qiniu'
 
@@ -17,6 +17,7 @@ export async function run(): Promise<void> {
     const destDir = core.getInput('dest_dir')
     const ignoreSourceMap = core.getInput('ignore_source_map') === 'true'
 
+    console.log('start')
     const manager = new QiniuUpload({
       accessKey,
       secretKey,
@@ -28,6 +29,7 @@ export async function run(): Promise<void> {
     })
     await manager.upload()
   } catch (error) {
+    console.log('error', error)
     // 如果发生错误，则工作流运行失败, 退出并提供错误消息
     if (error instanceof Error) core?.setFailed(error.message)
   }
