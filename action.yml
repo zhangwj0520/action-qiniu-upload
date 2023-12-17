@@ -1,4 +1,4 @@
-name: 'Qiniu Kodo Upload'
+name: 'Qiniu Kodo Upload Files'
 description: 'github action for uploading files to qiniu'
 author: 'zhangwweijie'
 
