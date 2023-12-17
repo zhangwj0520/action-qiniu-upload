@@ -42,6 +42,8 @@ export default class QiniuUpload {
     this.bucketManager = new qiniu.rs.BucketManager(this.mac, this.config)
 
     this.uploader = new qiniu.form_up.FormUploader(this.config)
+
+    console.log('object created')
   }
 
   /**
@@ -144,8 +146,11 @@ export default class QiniuUpload {
   }
 
   async upload(): Promise<void> {
+    console.log('upload: ')
     const baseDir = path.resolve(process.cwd(), this.sourceDir)
+    console.log('baseDir: ', baseDir)
     const files = glob.sync(`${baseDir}/**/*`, { nodir: true })
+    console.log('files: ', files)
 
     const tasks = files
       .map(file => {

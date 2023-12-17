@@ -58851,6 +58851,7 @@ class QiniuUpload {
         // 资源管理相关的操作首先要构建BucketManager对象
         this.bucketManager = new (qiniu_default()).rs.BucketManager(this.mac, this.config);
         this.uploader = new (qiniu_default()).form_up.FormUploader(this.config);
+        console.log('object created');
     }
     /**
      * 获取文件列表
@@ -58941,8 +58942,11 @@ class QiniuUpload {
         return input.replace(/^\//, '');
     }
     async upload() {
+        console.log('upload: ');
         const baseDir = external_path_default().resolve(process.cwd(), this.sourceDir);
+        console.log('baseDir: ', baseDir);
         const files = sync(`${baseDir}/**/*`, { nodir: true });
+        console.log('files: ', files);
         const tasks = files
             .map(file => {
             const relativePath = external_path_default().relative(baseDir, external_path_default().dirname(file));
@@ -58972,6 +58976,7 @@ class QiniuUpload {
  */
 async function run() {
     try {
+        console.log(111111111);
         const accessKey = core_default().getInput('access_key');
         const secretKey = core_default().getInput('secret_key');
         const bucket = core_default().getInput('bucket');
@@ -58979,6 +58984,7 @@ async function run() {
         const sourceDir = core_default().getInput('source_dir');
         const destDir = core_default().getInput('dest_dir');
         const ignoreSourceMap = core_default().getInput('ignore_source_map') === 'true';
+        console.log(1111111121212);
         const manager = new QiniuUpload({
             accessKey,
             secretKey,
@@ -58988,7 +58994,8 @@ async function run() {
             destDir,
             ignoreSourceMap
         });
-        await manager.upload();
+        console.log('manager', manager);
+        // await manager.upload()
     }
     catch (error) {
         // 如果发生错误，则工作流运行失败, 退出并提供错误消息
@@ -59002,7 +59009,6 @@ async function run() {
  * The entrypoint for the action.
  */
 
-// eslint-disable-next-line @typescript-eslint/no-floating-promises
 run();
 
 })();

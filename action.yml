@@ -33,6 +33,11 @@ inputs:
     description: 'ignore source maps'
     default: true
     required: false
+
+# Define your outputs here.
+outputs:
+  time:
+    description: '111Your output description here'
     
 runs:
   using: 'node20'
