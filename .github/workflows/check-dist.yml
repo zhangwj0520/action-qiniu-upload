@@ -1,0 +1,68 @@
+# 在 TypeScript 操作中，`dist/` 是一个特殊目录。当你参考
+# 具有 `uses:` 属性的操作，`dist/index.js` 是将要执行的代码
+# 运行。对于这个项目，“dist/index.js”文件是从其他文件转译而来的
+# 源文件。此工作流程确保 `dist/` 目录包含预期的转译代码。
+#
+# 如果此工作流程从功能分支运行，它将充当附加 CI
+# 如果签入的 `dist/` 目录与当前目录不匹配，则检查并失败
+name: 检查代码是否编译(重新构建对比)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check-dist:
+    name: Check dist/
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        id: pnpm-install
+        run: pnpm install
+
+
+      - name: Build dist/ Directory
+        id: build
+        run: npm run bundle
+
+      # This will fail the workflow if the PR wasn't created by Dependabot.
+      - name: Compare Directories
+        id: diff
+        run: |
+          if [ "$(git diff --ignore-space-at-eol --text dist/ | wc -l)" -gt "0" ]; then
+            echo "Detected uncommitted changes after build. See status below:"
+            git diff --ignore-space-at-eol --text dist/
+            exit 1
+          fi
+
+      # If `dist/` was different than expected, and this was not a Dependabot
+      # PR, upload the expected version as a workflow artifact.
+      - if: ${{ failure() && steps.diff.outcome == 'failure' }}
+        name: Upload Artifact
+        id: upload
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist/
