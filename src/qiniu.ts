@@ -36,10 +36,6 @@ export default class QiniuUpload {
     this.info = info
     this.error = error
 
-    this.info(
-      `'uploader init start,config:',${accessKey}-${secretKey}-${bucket}-${sourceDir}-${destDir}-${ignoreSourceMap}`
-    )
-
     this.mac = new qiniu.auth.digest.Mac(accessKey, secretKey)
     // 获取七牛配置
     this.config = new qiniu.conf.Config()
@@ -138,15 +134,15 @@ export default class QiniuUpload {
 
       this.uploader.putFile(token, key, file, putExtra, (err, body, info) => {
         if (err) {
-          return reject(new Error(`Upload failed: ${file}, ${err}`))
+          return reject(new Error(`文件上次失败: ${file}, ${err}`))
         }
 
         if (info.statusCode === 200) {
-          this.info(`Success: ${file} => [${this.bucket}]: ${key}`)
+          this.info(`文件上次成功: ${file} ========>  ${key}`)
           return resolve({ file, to: key })
         }
         this.error(`Error: ${err}`)
-        reject(new Error(`111Upload failed: ${file}`))
+        reject(new Error(`文件上次失败: ${key}`))
       })
     })
   }
@@ -156,13 +152,10 @@ export default class QiniuUpload {
 
   async upload(): Promise<void> {
     const baseDir = path.resolve(process.cwd(), this.sourceDir)
-    this.info(`Uploading ${baseDir} to ${this.bucket}`)
-
     const files = glob.sync(`${baseDir}/**/*`, { nodir: true })
 
     const tasks = files
       .map(file => {
-        this.info(`Uploading ${file} files`)
         const relativePath = path.relative(baseDir, path.dirname(file))
         const key = this.normalizePath(
           path.join(this.destDir, relativePath, path.basename(file))
@@ -178,7 +171,7 @@ export default class QiniuUpload {
 
     try {
       await pAll(tasks, { concurrency: 5 })
-      this.info('所有文件上次完毕!')
+      this.info('所有文件上传完毕!')
     } catch (error) {
       this.error((error as Error).message || 'Error')
     }
