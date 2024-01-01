@@ -18,8 +18,8 @@ dependencies:
     specifier: ^6.1.0
     version: 6.1.0
   qiniu:
-    specifier: ^7.10.1
-    version: 7.10.1
+    specifier: ^7.11.0
+    version: 7.11.0
 
 devDependencies:
   '@tsconfig/node20':
@@ -2387,8 +2387,8 @@ packages:
     engines: {node: '>=6'}
     dev: true
 
-  /qiniu@7.10.1:
-    resolution: {integrity: sha512-r/eaQOJ+mBOwz4iA1werRePThr68cekK8xUjeUhfMa7mANDvPaTS/L3Ainyo2y9JiSh4DoRpKaNCNBeS3H3G/g==}
+  /qiniu@7.11.0:
+    resolution: {integrity: sha512-Pdux9AxQR5V8IrlkSWDBUIrBRoxyK98sfmdGm19R0jZyxBMM2+KMwB0zhjAJhb6+lxEzjyHO3EfsVRz0JeTj7A==}
     engines: {node: '>= 6'}
     dependencies:
       agentkeepalive: 4.5.0
